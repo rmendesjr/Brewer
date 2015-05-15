@@ -23,6 +23,7 @@ $klient_dpl = 'Distiller Tank';
 
 $wtrFile='watermark.png';
 $wtrpath="/archive/";
+$wtrMrk=$wtrpath.$wtrFile;
 
 if(isset($_GET['wm'])){
 	$wm = $_GET['wm'];
@@ -35,18 +36,55 @@ function setWMPath(){
 	}
 }
 
-$wtrMrk=$wtrpath.$wtrFile;
 
 
 function setinvalid($msg){
 	//echo $msg;
 	global $invalDirectory;
-	$invalDirectory = true;
+	$invalDirectory = $msg;
+}
+
+
+if (isset($params[1])) : global $urlDir1; $urlDir1 = $params[1]; endIf;
+if (isset($params[2])) : global $urlDir2; $urlDir2 = $params[2]; endIf;
+if (isset($params[3])) : global $urlDir3; $urlDir3 = $params[3]; endIf;
+if (isset($params[4])) : global $urlDir4; $urlDir4 = $params[4]; endIf;
+if (isset($params[5])) : global $urlDir5; $urlDir5 = $params[5]; endIf;
+
+if(!isset($urlDir4) || !$urlDir4){
+	 setinvalid('Please select files to view from the drop-down menu.'); 
+
+}
+else{
+	$wtrpath.=$urlDir4.'/';
+	setWMPath();
+
+}
+
+if(!isset($urlDir3) || !$urlDir3){
+	setinvalid('Please define a project directory in the url path.');
+
+
+}
+else{
+	$wtrpath.=$urlDir3.'/';
+	setWMPath();
+}
+
+
+if(!isset($urlDir2) || !$urlDir2){
+	setinvalid('Please define a client directory in the url path.');
+	
+}
+else{
+	$wtrpath.=$urlDir2.'/';
+	setWMPath();
 }
 
 
 if(!isset($params[1])){
 	setinvalid('no param 1');
+	return;
 	
 }
 else{
@@ -55,112 +93,84 @@ else{
 
 }
 
-if(!isset($params[2])){
-	setinvalid('no param 2');
 
-}
-else{
-	$wtrpath.=$params[2].'/';
-	setWMPath();
-}
 
-if(!isset($params[3])){
-	setinvalid('no param 3');
+
 	
-}
-else{
-	$wtrpath.=$params[3].'/';
-	setWMPath();
-}
+if(isset($urlDir3) && $urlDir3){
 
-if(!isset($params[4])){
-	 setinvalid('no param 4');
+	$yr=$params[1];
 
-}
-else{
-	$wtrpath.=$params[4].'/';
-	setWMPath();
-
-}
+	if (strlen($yr)==2){
+		$yr="archive/20".$yr;
+	}
+	$klient=$urlDir2;
+	$proj=$urlDir3;
+	$projPath=$yr."/".$klient."/".$proj;
+	$imgDir=$yr."/".$klient."/".$proj."/".$urlDir4;
 
 
+	$urlVars="";
+
+	$proj = str_replace("-"," ", $proj);
+	$klient = str_replace("-"," ", $klient);
+
+	$klient_dpl = $klient;
 
 
-$yr=$params[1];
-
-if (strlen($yr)==2){
-	$yr="archive/20".$yr;
-}
-$klient=$params[2];
-$proj=$params[3];
-$projPath=$yr."/".$klient."/".$proj;
-$imgDir=$yr."/".$klient."/".$proj."/".$params[4];
+	if(isset($wm)){
+		$urlVars.="?wm=1";
+	}
 
 
-$urlVars="";
+	if(isset($_GET['cn'])){
 
-$proj = str_replace("-"," ", $proj);
-$klient = str_replace("-"," ", $klient);
+		$klient_dpl =$_GET['cn'];
+		if($urlVars){
+			$urlVars.="&cn=".urlencode($klient_dpl);
+		}
+		else{
+			$urlVars="?cn=".urlencode($klient_dpl);
+		}
+	}
 
-$klient_dpl = $klient;
+	if(isset($_GET['bg'])){
+		$bgCrl =$_GET['bg'];
+		if($urlVars){
+			$urlVars.="&bg=".$bgCrl;
+		}
+		else{
+			$urlVars="?bg=".$bgCrl;
+		}
+
+	}
 
 
-if(isset($wm)){
-	$urlVars.="?wm=1";
-}
+	#set a 2 digit year for use in linking to folders to maintain an invalid directory for htaccess redirect
+	$projPathSmllYr = str_replace(date('Y')."/",date('y')."/", $projPath);
+	$projPathSmllYr = str_replace('archive/','', $projPathSmllYr);
 
+	#See if a Content View Type is defined
+	//print_r($params);
+	//echo('param 5 ='.$urlDir5);
 
-if(isset($_GET['cn'])){
+	$trailingSlash="";
 
-	$klient_dpl =$_GET['cn'];
-	if($urlVars){
-		$urlVars.="&cn=".urlencode($klient_dpl);
+	if(isset($urlDir5) && $urlDir5 =='list'){
+		$cType= "list";
+		$altView ='slideshow';
 	}
 	else{
-		$urlVars="?cn=".urlencode($klient_dpl);
+		$cType= "slideshow";
+		$altView = 'list';
 	}
-}
+	$trailingSlash .= $altView.$urlVars;
 
-if(isset($_GET['bg'])){
-	$bgCrl =$_GET['bg'];
-	if($urlVars){
-		$urlVars.="&bg=".$bgCrl;
-	}
-	else{
-		$urlVars="?bg=".$bgCrl;
-	}
 }
 
 
-#set a 2 digit year for use in linking to folders to maintain an invalid directory for htaccess redirect
-$projPathSmllYr = str_replace(date('Y')."/",date('y')."/", $projPath);
-$projPathSmllYr = str_replace('archive/','', $projPathSmllYr);
-
-#See if a Content View Type is defined
-//print_r($params);
-//echo('param 5 ='.$params[5]);
-
-$trailingSlash="/".$projPathSmllYr."/".$params[4]."/";
-
-
-if(isset($params[5]) && $params[5] =='list'){
-	$cType= "list";
-	$altView ='slideshow';
-}
-else{
-	$cType= "slideshow";
-	$altView = 'list';
-}
-$trailingSlash .= $altView.$urlVars;
-
-
-#Check to make sure a client project is specified
-if(!$params[3]){
- $invalDirectory=true;
-}
 #function to create array from files of selected directory
 function hasComps($directory = NULL, $imgPath = NULL) {
-
     if(file_exists($directory) && $dir = opendir($directory)) {
 		$tmp = array();
 	    while($file = readdir($dir)){
@@ -200,71 +210,80 @@ function hasComps($directory = NULL, $imgPath = NULL) {
 		$i=1;
 
 
-	foreach ($tmp as $afile){
-/*
-		$content = file_get_contents($afile);
-		$xmp_data_start = strpos($content, '<x:xmpmeta');
-		$xmp_data_end   = strpos($content, '</x:xmpmeta>');
-		$xmp_length     = $xmp_data_end - $xmp_data_start;
-		$xmp_data       = substr($content, $xmp_data_start, $xmp_length + 12);
-		//$xmp            = simplexml_load_string($xmp_data);
-		$xmp           =new simpleXMLElement($xmp_data);
-		//$xmp  = simplexml_load_string($xmp_data);
-		//echo $xmp->description;
-	//	echo $xmp_data->description;
+		foreach ($tmp as $afile){
+	/*
+			$content = file_get_contents($afile);
+			$xmp_data_start = strpos($content, '<x:xmpmeta');
+			$xmp_data_end   = strpos($content, '</x:xmpmeta>');
+			$xmp_length     = $xmp_data_end - $xmp_data_start;
+			$xmp_data       = substr($content, $xmp_data_start, $xmp_length + 12);
+			//$xmp            = simplexml_load_string($xmp_data);
+			$xmp           =new simpleXMLElement($xmp_data);
+			//$xmp  = simplexml_load_string($xmp_data);
+			//echo $xmp->description;
+		//	echo $xmp_data->description;
 
-*/
+	*/
+			if(!file_exists($afile)){
+				 setinvalid('Invalid Directory');
+			}
 
-		$afile = explode(($directory."/"),$afile);
+			else{
+				$afile = explode(($directory."/"),$afile);
 
-		//$fileName=explode("[/\\.]",$afile[1]);
-		$fileName=explode(".",$afile[1]);
-		$fileName=$fileName[0];
-		$fileName=str_replace("-"," ", $fileName);
-		$fileName=str_replace("_"," ", $fileName);
-		$fileName=ucwords($fileName);
-		$imgName[$i]= $fileName;
-		$i++;
-	}
+				//$fileName=explode("[/\\.]",$afile[1]);
+				$fileName=explode(".",$afile[1]);
+				$fileName=$fileName[0];
+				$fileName=str_replace("-"," ", $fileName);
+				$fileName=str_replace("_"," ", $fileName);
+				$fileName=ucwords($fileName);
+				$imgName[$i]= $fileName;
+				$i++;
+			}
+		}
 	return $tmp;
 	}
 	else{
-		setinvalid('directory not set');
+
+		setinvalid('Directory not valid.');
+		global $urlDir4;
+		$urlDir4 = 0;
 	}
 }
 
 
 #function to create array from project folders of selected directory
 function hasFolders($projPath = NULL, $imgPath = NULL,$projPathSmllYr) {
- if(file_exists($projPath) && $pjcts = opendir($projPath)) {
-	$flds = array();
-    while($file2 = readdir($pjcts)){
-        if ($file2 != '.' and $file2 != '..'){
-            // add the filename, to be sure not to
-            // overwrite a array key
-			$ctime2 = filectime($projPath."/" . $file2) . ',' . $file2;
-		  $flds[$ctime2] =$imgPath."/". $projPathSmllYr.'/'.$file2."";
-        }	
-    }
-    closedir($pjcts);
-    asort($flds);
-    return $flds;
-	}
-	else{
-		setinvalid('directory not set');
-	}
-}
-  	if(!isset($invalDirectory)){
-	# setup
-	$imgId	= "lgImage"; 	// id tag for images
-	$getImg = hasComps($imgDir,$imgPath); // gather images
-	$getFolders = hasFolders($projPath,$imgPath,$projPathSmllYr);
-	$numImgs = count($getImg); // count images
+	if(file_exists($projPath) && $pjcts = opendir($projPath)) {
+
+		$flds = array();
+		while($file2 = readdir($pjcts)){
+		    if ($file2 != '.' and $file2 != '..'){
+		        // add the filename, to be sure not to
+		        // overwrite a array key
+				$ctime2 = filectime($projPath."/" . $file2) . ',' . $file2;
+			  	$flds[$ctime2] =$imgPath."/". $projPathSmllYr.'/'.$file2."";
+		    }	
+		}
+		closedir($pjcts);
+		asort($flds);
+		return $flds;
 	}
 	
-
-
-
+	else{
+		setinvalid('Directory not valid');
+	 	global $urlDir3;
+		$urlDir3 = 0;
+	}
+}
+  	if(isset($urlDir3) && $urlDir3){
+		$imgId	= "lgImage"; 	// id tag for images
+		$getImg = hasComps($imgDir,$imgPath); // gather images
+		$getFolders = hasFolders($projPath,$imgPath,$projPathSmllYr);
+		$numImgs = count($getImg); // count images
+		
+	}
+	
 
 class GoogleUrlApi {
 	

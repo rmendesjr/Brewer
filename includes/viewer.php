@@ -17,16 +17,16 @@
 <body class="hover <?= $cType ?>" <? if(isset($_GET['bg'])): echo 'style="background-color:#'.$_GET['bg'].'";'; endif; ?>>
 <div id="infoBox" style="display: none">
 <?php 
-	echo('<!-- '.$yr."/".$params[2]."/".$params[3]. '-->');
-	$pagePath='/archive/index.php/'.$yr."/".$params[2]."/".$params[3];
+	echo('<!-- '.$yr."/".$urlDir2."/".$urlDir3. '-->');
+	$pagePath='/archive/index.php/'.$yr."/".$urlDir2."/".$urlDir3;
 	$curl = curl_init();
 	// curl_setopt ($curl, CURLOPT_URL, $pagePath);
 	curl_exec ($curl);
 	curl_close ($curl);
 ?>
 </div>
-<? if(isset($invalDirectory)): ?>
-<h1 class="errorPath">Invalid Path</h1>
+<?  if(isset($invalDirectory) && (!isset($urlDir3) || !$urlDir3)): ?>
+<h2 class="errorPath"><?= $invalDirectory ?></h1>
 <? else: ?>
 <div class="header">
 <div class="header-info">
@@ -55,7 +55,7 @@
 	<div id="projDetails">
 			<div class="project">
 			<div class="info"></div>
-<?php if(($params[3])): ?>
+<?php if(($urlDir3)): ?>
 	<div class="selectbox">
 		<select name="Projects" onChange="location = this.options[this.selectedIndex].value;">
 	<option value="" >Select Files</option>
@@ -63,7 +63,7 @@
 <?php 
 $fldrRoot = explode('archive',$fldr);
 $folderName=explode("/",$fldr);?>
-	<option value="<?=$fldr?>/<?=$params[5]?>/<?=$urlVars?>" <?php if($folderName[sizeof($folderName)-1]==$params[4]): echo 'selected="selected"'; endif; ?>>
+	<option value="<?=$fldr?>/<?=$trailingSlash?>" <?php if(isset($urlDir4) && $folderName[sizeof($folderName)-1]==$urlDir4): echo 'selected="selected"'; endif; ?>>
 <?PHP
 	$folderName = ucwords(str_replace("-"," ",$folderName[sizeof($folderName)-1]));
 	echo($folderName);
@@ -82,7 +82,7 @@ $folderName=explode("/",$fldr);?>
 
 </div>
 	<div class='header-options'>
-	<?php if((sizeof($getImg)>1)&&($params[4]) && $cType != 'list'): ?>
+	<?php if(isset($getImg) && (sizeof($getImg)>1)&&(isset($urlDir4)) && $cType != 'list'): ?>
 		<div class="pagination">
 		<div class="navButton next"><a id="btnNext" href="#next"  title="Next Photo">&#x276f;</a></div>
 		<div class="navButton prev" ><a id="btnPrev" href="#prev" title="Previous Photo">&#x276e;</a></div>
@@ -127,10 +127,10 @@ if($cType == 'list'): ?>
 =================================================================================== */
  ?>
 	 <div id="container">
-		<?php if(!$params[4]): ?>
+		<?php if(!isset($urlDir4) || !$urlDir4): ?>
 		<p>&nbsp;</p>
 		<p>&nbsp;</p>
-		<h2 class="errorPath">Please select files to view from the drop-down menu</h2>
+		<h2 class="errorPath"><?= $invalDirectory ?></h2>
 		<?php else: ?>
 		<div id="<?php echo $imgId?>" >
 				<? if(isset($wm)): ?><div class="watermark" style="background:url('<?= $wtrMrk ?>')" /></div><? endIf; ?>
@@ -141,13 +141,8 @@ if($cType == 'list'): ?>
 		<?php endif; ?>
 		<!-- End "Comps" Div -->
 		</div>
-		<?php if(!isset($invalDirectory)): ?>
-		<? /*<div class="footer"><div class="copyright">
-		Copyright &copy; 2015 The Elixir Haus.</div>
-
-		</div> */?>
 	</div>
-<?php endif; endif; 
+<?php endif;
 /* ===================================================================================
 										End Content
 =================================================================================== */
@@ -168,7 +163,9 @@ if($cType == 'list'): ?>
 	var imgPXWidth = 0;
 	var imgNumber = 0;  
 
-	<?php $i=0; foreach ($getImg as $image): ?>
+	<?php $i=0; 
+	if(isset($getImg)){
+		foreach ($getImg as $image): ?>
 	img[<?php echo $i?>] = "/<?php echo $image?>";
 	imgCount[<?php echo $i?>] = "<?php echo $i+1?>";
 	imgDescr[<?php echo $i?>] = "<?php echo ($imgName[($i+1)]); ?>";
@@ -176,7 +173,7 @@ if($cType == 'list'): ?>
 	imgHeight[<?php echo $i?>]="<?php $imgInfo=getimagesize($image); echo($imgInfo[1]); ?>"
 
 		
-	<?php $i++; endforeach; ?>
+	<?php $i++; endforeach; }?>
 
 </script>
 
