@@ -1,5 +1,5 @@
 # Brewer
-A “databaseless” extranet for mock-ups.
+A “databaseless” extranet for reviewing design mock-ups.
 
 ###Overview###
 This online tool is made for showcasing designs for review. It loads a folder of images and allows them to be displayed all together as a list, or one at a time as a slideshow.
