@@ -15,10 +15,6 @@ Once enabled a shortened link will appear in the bottom of the browser window. C
 
 ###Configuration###
 
-
-*Example:*
-your.wbesite.com/15/some-company/some-project/round-01/showcase?wm=1
-
 **Watermarking** : 
 There is a watermark image included by default. Replace "watermark.png" located in the "archive" folder to personalize it. To enable watermarking, pass the url variable "?wm=1".
 
