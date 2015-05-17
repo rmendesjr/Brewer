@@ -147,7 +147,7 @@ if($cType == 'list'): ?>
 										End Content
 =================================================================================== */
 ?>
-<a href="http://www.theelixirhaus.com/projects/brewer" class="footer credit" target="_blank">Powered by Brewer</a>
+<a href="http://theelixirhaus.com/projects/brewer" class="footer credit" target="_blank">Powered by Brewer</a>
 <? if(isset($shorterurl)):?><a href="<?= $shorterurl ?>" class="footer shortUrl">Short Url: <?= $shorterurl ?></a><? endIf;?>
 </body>
 <script>
