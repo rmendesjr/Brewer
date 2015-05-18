@@ -338,9 +338,8 @@ class GoogleUrlApi {
 if($GoogleAPIKey){
 	
 	$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-	$shorten =$protocol.$_SERVER['HTTP_HOST'].$trailingSlash;
+	$shorten =$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	$getGURL = new GoogleURLAPI($GoogleAPIKey);
-
 	$shorterurl= $getGURL->shorten($shorten);
 }
 ?>
