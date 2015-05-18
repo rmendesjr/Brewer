@@ -63,7 +63,7 @@
 <?php 
 $fldrRoot = explode('archive',$fldr);
 $folderName=explode("/",$fldr);?>
-	<option value="<?=$fldr?>/<?=$trailingSlash?>" <?php if(isset($urlDir4) && $folderName[sizeof($folderName)-1]==$urlDir4): echo 'selected="selected"'; endif; ?>>
+	<option value="<?=$fldr?>/<?=$trailingSlash.$cType.$urlVars;?>" <?php if(isset($urlDir4) && $folderName[sizeof($folderName)-1]==$urlDir4): echo 'selected="selected"'; endif; ?>>
 <?PHP
 	$folderName = ucwords(str_replace("-"," ",$folderName[sizeof($folderName)-1]));
 	echo($folderName);
@@ -92,9 +92,9 @@ $folderName=explode("/",$fldr);?>
 		<div class="viewNav">
 		View as
 	<?php if($cType == 'list'): ?>
-		<div class="btnSlideshow"><a href="<?php echo $trailingSlash?>" title="View as Slideshow">Slideshow</a></div>
+		<div class="btnSlideshow"><a href="<?php echo $trailingSlash.$altView.$urlVars;?>" title="View as Slideshow">Slideshow</a></div>
 	<?php else: ?>
-		<div class="btnList"><a href="<?php echo $trailingSlash?>"  title="View as List">List</a></div>
+		<div class="btnList"><a href="<?php echo $trailingSlash.$altView.$urlVars ?>"  title="View as List">List</a></div>
 	<? /*  <div class="btnPrint"><a href="javascript:window.print();" title="Print">&nbsp;</a></div> */?>
 	<?php endif; ?> 
 	<?php if(isset($downloadZip)): ?>

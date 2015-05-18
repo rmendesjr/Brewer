@@ -164,7 +164,6 @@ if(isset($urlDir3) && $urlDir3){
 		$cType= "slideshow";
 		$altView = 'list';
 	}
-	$trailingSlash .= $altView.$urlVars;
 
 }
 
