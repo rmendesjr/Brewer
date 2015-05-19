@@ -46,5 +46,5 @@ your.wbesite.com/15/some-company/some-project/round-01/showcase?cn=company%20tit
 
 
 ***
-View demo : [Brewer Demo](http://goo.gl/7Ez03v)  |  [Authored by The Elixir Haus](http://theelixirhaus.com/projects/brewer/)
+[View Demo](http://goo.gl/7Ez03v)  |  [Authored by The Elixir Haus](http://theelixirhaus.com/projects/brewer/)
 ***
