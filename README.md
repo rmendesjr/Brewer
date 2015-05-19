@@ -44,6 +44,7 @@ If you're not familiar with url variables, they are parameter names and data you
 *Example:*
 your.wbesite.com/15/some-company/some-project/round-01/showcase?cn=company%20title&bg=ccc&wm=1
 
+
 ***
-[Authored by The Elixir Haus](http://theelixirhaus.com/projects/brewer/)
+View demo : [Brewer Demo](http://goo.gl/7Ez03v)  |  [Authored by The Elixir Haus](http://theelixirhaus.com/projects/brewer/)
 ***
